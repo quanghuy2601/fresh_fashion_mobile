@@ -1,49 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:fresh_fashion_mobile/core/config/routes/route_path.dart';
 import 'package:fresh_fashion_mobile/src/feature/authentication/domain/usecase/auth_service.dart';
-import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> callPaymentApi() async {
-      String baseURL = 'https://6ab7-2405-4800-5716-7670-c541-f6c9-4278-1f3e.ngrok-free.app/payment';
-      var res = await http.post(Uri.parse(baseURL), headers: {
-        "Content-Type": "application/json",
-      });
-      print(res.statusCode);
-      print(res.body);
-      return res;
-    }
-
-    Future<http.Response> callProductApi() async {
-      String baseURL = 'https://ba89-2405-4800-5716-7670-c541-f6c9-4278-1f3e.ngrok-free.app/api/product';
-      var res = await http.get(Uri.parse(baseURL), headers: {
-        "Content-Type": "application/json",
-      });
-      print(res.statusCode);
-      print(res.body);
-      return res;
-    }
-
     final authService = AuthService();
 
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
 
-    void login() async {
+    void signUp() async {
       final email = emailController.text;
       final password = passwordController.text;
+      final confirmPassword = confirmPasswordController.text;
+
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Password don't match")),
+        );
+        return;
+      }
 
       try {
-        await authService.signInWithEmailPassword(email, password);
+        await authService.signUpWithEmailPassword(email, password);
+        Navigator.pop(context);
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
         centerTitle: true,
       ),
       body: Column(
@@ -70,18 +59,22 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: passwordController,
             decoration: const InputDecoration(label: Text("Password")),
           ),
+          TextField(
+            controller: confirmPasswordController,
+            decoration: const InputDecoration(label: Text("Confirm Password")),
+          ),
           const SizedBox(height: 12),
           ElevatedButton(
-            onPressed: login,
-            child: const Text("Login"),
+            onPressed: signUp,
+            child: const Text("Sign Up"),
           ),
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, RoutePath.register);
+              Navigator.pop(context);
             },
             child: const Center(
-              child: Text("Don't have an account? Sign Up"),
+              child: Text("Have an account? Login"),
             ),
           ),
         ],

@@ -5,7 +5,7 @@ import 'package:fresh_fashion_mobile/src/common/presentation/screen/app_loading_
 import 'package:fresh_fashion_mobile/src/common/presentation/screen/data_parsing_screen.dart';
 import 'package:fresh_fashion_mobile/src/common/presentation/screen/disconnect_screen.dart';
 import 'package:fresh_fashion_mobile/src/common/presentation/screen/unsupport_version_screen.dart';
-import 'package:fresh_fashion_mobile/src/feature/home/presentation/screen/home_screen.dart';
+import 'package:fresh_fashion_mobile/src/feature/authentication/presentation/screen/authentication_layer.dart';
 import 'package:get_it/get_it.dart';
 
 class ValidationLayer extends StatelessWidget {
@@ -17,7 +17,7 @@ class ValidationLayer extends StatelessWidget {
       bloc: GetIt.instance.get<ValidationCubit>()..init(),
       builder: (context, state) {
         if (state is ValidatedValidationState) {
-          return const HomeScreen();
+          return const AuthenticationLayer();
         }
         if (state is DisconnectedValidationState) {
           return const DisconnectScreen();
