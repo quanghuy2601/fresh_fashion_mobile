@@ -10,4 +10,10 @@ class BaseColor {
   static const Color red600 = Color(0xFFB80C00);
 
   static const Color greyNeutral600 = Color(0xFF595F5F);
+
+  static const gradient = LinearGradient(colors: [
+    Color(0xffF9881F),
+    Color(0xffF9881F),
+    Color(0xffFF774C),
+  ]);
 }

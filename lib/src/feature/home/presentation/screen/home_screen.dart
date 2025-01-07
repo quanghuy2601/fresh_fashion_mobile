@@ -10,19 +10,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final authService = AuthService();
+
+  void logout() async {
+    await authService.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentEmail = authService.getCurrentUserEmail();
     final currentUserId = authService.getCurrentUserId();
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(currentEmail.toString()),
-          Text(currentUserId.toString()),
-        ],
+      appBar: AppBar(
+        title: const Text('Home Screen'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(currentEmail.toString()),
+            Text(currentUserId.toString()),
+          ],
+        ),
       ),
     );
   }
