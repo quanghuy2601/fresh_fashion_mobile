@@ -23,16 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return res;
     }
 
-    Future<http.Response> callProductApi() async {
-      String baseURL = 'https://ba89-2405-4800-5716-7670-c541-f6c9-4278-1f3e.ngrok-free.app/api/product';
-      var res = await http.get(Uri.parse(baseURL), headers: {
-        "Content-Type": "application/json",
-      });
-      print(res.statusCode);
-      print(res.body);
-      return res;
-    }
-
     final authService = AuthService();
 
     final emailController = TextEditingController();

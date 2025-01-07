@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fresh_fashion_mobile/core/config/routes/route_path.dart';
 import 'package:fresh_fashion_mobile/src/feature/authentication/domain/usecase/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {

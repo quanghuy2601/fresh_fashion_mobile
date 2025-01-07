@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fresh_fashion_mobile/core/config/dependency/dependency_config.dart';
 import 'package:fresh_fashion_mobile/core/ui/resource/icon_path.dart';
 import 'package:fresh_fashion_mobile/core/ui/style/base_color.dart';
 import 'package:fresh_fashion_mobile/src/feature/authentication/presentation/bloc/navigation_bloc/navigation_bloc.dart';
