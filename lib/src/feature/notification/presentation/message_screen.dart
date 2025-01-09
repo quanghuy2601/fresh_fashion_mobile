@@ -17,6 +17,16 @@ class _MessageScreenState extends State<MessageScreen> {
 
   String? userId = authService.getCurrentUserId();
 
+  final TextEditingController messageController = TextEditingController();
+
+  Future<void> sendMessage() async {
+    await supabase.from('chat_table').insert({
+      'chat': messageController.text,
+      'userId': userId,
+    });
+    messageController.text = '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,15 +42,25 @@ class _MessageScreenState extends State<MessageScreen> {
           } else if (snapshot.hasError) {
             return const Center(child: Text('Lỗi khi tải dữ liệu'));
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                if (snapshot.data![index]['userId'] == userId) {
-                  return _myTextWidget(snapshot.data![index]['chat']);
-                } else {
-                  return _yourTextWidget(snapshot.data![index]['chat']);
-                }
-              },
+            return SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              child: Stack(
+                children: [
+                  _inputMessage(),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      if (snapshot.data![index]['userId'] == userId) {
+                        return _myTextWidget(snapshot.data![index]['chat']);
+                      } else {
+                        return _yourTextWidget(snapshot.data![index]['chat']);
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           }
         },
@@ -65,6 +85,39 @@ class _MessageScreenState extends State<MessageScreen> {
             text,
             style: const TextStyle(fontSize: 20),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inputMessage() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 670, left: 10, bottom: 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: messageController,
+                decoration: InputDecoration(
+                  hintText: 'Nhập tin nhắn...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 15.0,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            IconButton(
+              icon: const Icon(Icons.send, color: Colors.black),
+              onPressed: sendMessage,
+            ),
+          ],
         ),
       ),
     );
