@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fresh_fashion_mobile/core/ui/resource/icon_path.dart';
-import 'package:fresh_fashion_mobile/core/ui/style/base_color.dart';
 import 'package:fresh_fashion_mobile/src/feature/authentication/presentation/bloc/navigation_bloc/navigation_bloc.dart';
 import 'package:fresh_fashion_mobile/src/feature/cart/presentation/screen/cart_screen.dart';
 import 'package:fresh_fashion_mobile/src/feature/home/presentation/screen/home_screen.dart';
@@ -63,43 +60,50 @@ class _RootScreenState extends State<RootScreen> {
       alignment: Alignment.bottomCenter,
       children: [
         Container(
-          height: 100,
-          // color: Colors.amberAccent,
-        ),
-        Container(
-          height: 85,
+          height: 60,
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
             ),
           ),
         ),
         Container(
-          height: 75,
+          height: 45,
           alignment: Alignment.topCenter,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _bottomNavbaritem(
                 context,
-                defaultIcon: SvgPicture.asset(IconPath.homeInactive),
-                choosenIcon: SvgPicture.asset(IconPath.homeActive),
+                defaultIcon: const Icon(Icons.home),
+                choosenIcon: const Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                // defaultIcon: SvgPicture.asset(IconPath.homeInactive),
+                // choosenIcon: SvgPicture.asset(IconPath.homeActive),
                 page: 0,
               ),
               _bottomNavbaritem(
                 context,
-                defaultIcon: SvgPicture.asset(IconPath.heartInactive),
-                choosenIcon: SvgPicture.asset(IconPath.heartActive),
+                defaultIcon: const Icon(Icons.heart_broken),
+                choosenIcon: const Icon(
+                  Icons.heart_broken,
+                  color: Colors.white,
+                ),
+                // defaultIcon: SvgPicture.asset(IconPath.heartInactive),
+                // choosenIcon: SvgPicture.asset(IconPath.heartActive),
                 page: 1,
               ),
               Container(
                 width: 45,
                 height: 45,
                 decoration: BoxDecoration(
-                  gradient: BaseColor.gradient,
+                  // gradient: BaseColor.gradient,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: IconButton(
@@ -114,14 +118,24 @@ class _RootScreenState extends State<RootScreen> {
               ),
               _bottomNavbaritem(
                 context,
-                defaultIcon: SvgPicture.asset(IconPath.notificationInactive),
-                choosenIcon: SvgPicture.asset(IconPath.notificationActive),
+                defaultIcon: const Icon(Icons.notifications),
+                choosenIcon: const Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+                // defaultIcon: SvgPicture.asset(IconPath.notificationInactive),
+                // choosenIcon: SvgPicture.asset(IconPath.notificationActive),
                 page: 2,
               ),
               _bottomNavbaritem(
                 context,
-                defaultIcon: SvgPicture.asset(IconPath.buyInactive),
-                choosenIcon: SvgPicture.asset(IconPath.buyActive),
+                defaultIcon: const Icon(Icons.settings),
+                choosenIcon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                // defaultIcon: SvgPicture.asset(IconPath.buyInactive),
+                // choosenIcon: SvgPicture.asset(IconPath.buyActive),
                 page: 3,
               ),
             ],
@@ -133,19 +147,22 @@ class _RootScreenState extends State<RootScreen> {
 
   Widget _bottomNavbaritem(BuildContext context, {required defaultIcon, required choosenIcon, required page}) {
     int currentPage = context.watch<NavigationBloc>().state;
-    return GestureDetector(
-      onTap: () {
-        BlocProvider.of<NavigationBloc>(context).changeSelectedIndex(page);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: GestureDetector(
+        onTap: () {
+          BlocProvider.of<NavigationBloc>(context).changeSelectedIndex(page);
 
-        pageController.animateToPage(
-          page,
-          duration: const Duration(milliseconds: 10),
-          curve: Curves.fastLinearToSlowEaseIn,
-        );
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: (currentPage == page) ? choosenIcon : defaultIcon,
+          pageController.animateToPage(
+            page,
+            duration: const Duration(milliseconds: 10),
+            curve: Curves.fastLinearToSlowEaseIn,
+          );
+        },
+        child: Container(
+          color: Colors.transparent,
+          child: (currentPage == page) ? choosenIcon : defaultIcon,
+        ),
       ),
     );
   }

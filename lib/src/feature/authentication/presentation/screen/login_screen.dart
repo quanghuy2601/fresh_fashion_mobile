@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fresh_fashion_mobile/core/config/routes/route_path.dart';
+import 'package:fresh_fashion_mobile/core/ui/resource/image_path.dart';
 import 'package:fresh_fashion_mobile/src/feature/authentication/domain/usecase/auth_service.dart';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,16 +13,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> callPaymentApi() async {
-      String baseURL = 'https://6ab7-2405-4800-5716-7670-c541-f6c9-4278-1f3e.ngrok-free.app/payment';
-      var res = await http.post(Uri.parse(baseURL), headers: {
-        "Content-Type": "application/json",
-      });
-      print(res.statusCode);
-      print(res.body);
-      return res;
-    }
-
     final authService = AuthService();
 
     final emailController = TextEditingController();
@@ -48,33 +38,86 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text('Login'),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: Image.asset(
+                ImagePath.shop,
+                fit: BoxFit.contain,
+              ),
+            ),
+            _profileWidget("Email", emailController),
+            _profileWidget("Mật khẩu", passwordController),
+            const SizedBox(height: 12),
+            _submitButton(login),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, RoutePath.register);
+              },
+              child: const Center(
+                child: Text("Don't have an account? Sign Up"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _profileWidget(String lable, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
-            controller: emailController,
-            decoration: const InputDecoration(label: Text("Email")),
+          Text(
+            lable,
+            style: const TextStyle(fontSize: 16),
           ),
-          TextField(
-            controller: passwordController,
-            decoration: const InputDecoration(label: Text("Password")),
-          ),
-          const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed: login,
-            child: const Text("Login"),
-          ),
-          const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, RoutePath.register);
-            },
-            child: const Center(
-              child: Text("Don't have an account? Sign Up"),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: controller,
+            obscureText: lable == "Mật khẩu" ? true : false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 1.0,
+                ),
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _submitButton(Function() function) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      child: GestureDetector(
+        onTap: function,
+        child: Container(
+          alignment: Alignment.center,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: const Text(
+            "Đăng nhập",
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
