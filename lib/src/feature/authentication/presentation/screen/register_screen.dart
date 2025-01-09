@@ -84,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SizedBox(height: 10),
           TextFormField(
             controller: controller,
-            obscureText: lable == "Password" ? true : false,
+            obscureText: lable.contains("khẩu") ? true : false,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
