@@ -9,6 +9,7 @@ class SettingService {
   final authService = AuthService();
 
   Future<UserInfoModel> getUserProfile() async {
+    addUserInfo();
     final userId = authService.getCurrentUserId();
     final data = await _supabase.from('user_info_table').select().eq('userId', userId!).maybeSingle();
     final response = UserInfoModel.fromJson(data!);
